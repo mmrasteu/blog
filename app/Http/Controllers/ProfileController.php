@@ -40,7 +40,7 @@ class ProfileController extends Controller
      * Display the specified resource.
      */
     public function show(Profile $profile)
-    {
+    {   
         $articles = Article::where([
             ['user_id', $profile->user_id], 
             ['status', '1']])->simplePaginate(8);
@@ -53,6 +53,7 @@ class ProfileController extends Controller
      */
     public function edit(Profile $profile)
     {
+        $this->authorize('view', $profile);
         return view('subscriber.profiles.edit', compact('profile'));
     }
 
@@ -60,7 +61,8 @@ class ProfileController extends Controller
      * Update the specified resource in storage.
      */
     public function update(ProfileRequest $request, Profile $profile)
-    {
+    {   
+        $this->authorize('update', $profile);
         $user = User::find(Auth::id());
         //Si el usuario sube una nueva imagen
         if ($request->hasFile('photo')) { 

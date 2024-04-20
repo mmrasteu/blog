@@ -20,7 +20,7 @@ class CategoryController extends Controller
         $categories = Category::orderBy('id', 'desc')
                     ->simplePaginate(8);
 
-        return view('admin.category.index', compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -47,7 +47,7 @@ class CategoryController extends Controller
         Category::create($category);
 
         return redirect()->action([CategoryController::class, 'index'])
-                            ->width('success-create', 'Categoria creado con exito');
+                            ->with('success-create', 'Categoria creado con exito');
     }
 
     /**
@@ -73,14 +73,14 @@ class CategoryController extends Controller
 
         // Actualizar datos
         $category->update([
-            'title'         => $request->name,
+            'name'         => $request->name,
             'slug'          => $request->slug,
             'status'        => $request->status,
             'is_featured'   => $request->is_featured,
         ]);
 
         return redirect()->action([CategoryController::class, 'index'], compact('category'))
-                            ->width('success-update', 'Categoria modificada con exito');
+                            ->with('success-update', 'Categoria modificada con exito');
     }
 
     /**
@@ -97,12 +97,13 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()->action([CategoryController::class, 'index'], compact('category'))
-                            ->width('success-delete', 'Categoria eliminada con exito');
+                            ->with('success-delete', 'Categoria eliminada con exito');
     }
 
     //Filtrar arcitulso por categorias
     public function detail(Category $category)
-    {
+    {   
+        $this->authorize('published', $category);
         $articles = Article::where([
             ['category_id', $category->id],
             ['status', '1']

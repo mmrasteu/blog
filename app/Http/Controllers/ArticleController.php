@@ -23,7 +23,7 @@ class ArticleController extends Controller
                     ->orderBy('id', 'desc')
                     ->simplePaginate(10);
 
-        return view('admin.article.index', compact('articles'));
+        return view('admin.articles.index', compact('articles'));
     }
 
     /**
@@ -36,7 +36,7 @@ class ArticleController extends Controller
                                 ->where('status', '1')
                                 ->get();
 
-        return view('admin.article.create', compact('categories'));
+        return view('admin.articles.create', compact('categories'));
 
     }
 
@@ -64,14 +64,15 @@ class ArticleController extends Controller
         Article::create($article);
 
         return redirect()->action([ArticleController::class, 'index'])
-                            ->width('success-create', 'Articulo creado con exito');
+                            ->with('success-create', 'Articulo creado con exito');
     }
 
     /**
      * Display the specified resource.
      */
     public function show(Article $article)
-    {
+    {   
+        $this->authorize('published', $article);
         $comments = $article->comments()->simplePaginate(5);
 
         return view('subscriber.articles.show', compact('article', 'comments'));
@@ -81,19 +82,22 @@ class ArticleController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Article $article)
-    {
+    {   
+        $this->authorize('view', $article);
         $categories = Category::select(['id', 'name'])
                                 ->where('status', '1')
                                 ->get();
 
-        return view('admin.article.edit', compact('categories', 'article'));
+        return view('admin.articles.edit', compact('categories', 'article'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Article $request, Article $article)
-    {
+    public function update(ArticleRequest $request, Article $article)
+    {   
+        $this->authorize('update', $article);
+
         //Si el usuario sube una nueva imagen
         if ($request->hasFile('image')) { 
             // Eliminar imagen anterior
@@ -114,7 +118,7 @@ class ArticleController extends Controller
         ]);
 
         return redirect()->action([ArticleController::class, 'index'])
-                            ->width('success-update', 'Articulo modificado con exito');
+                            ->with('success-update', 'Articulo modificado con exito');
     }
 
     /**
@@ -122,6 +126,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
+        $this->authorize('delete', $article);
         // Eliminar imagen de articulo cuando se borre el articulo
         if ($article->image) { 
             File::delete(public_path('storage/' . $article->image));
@@ -131,6 +136,6 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect()->action([ArticleController::class, 'index'], compact('article'))
-                            ->width('success-delete', 'Articulo eliminado con exito');
+                            ->with('success-delete', 'Articulo eliminado con exito');
     }
 }

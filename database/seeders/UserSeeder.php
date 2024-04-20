@@ -28,15 +28,15 @@ class UserSeeder extends Seeder
         Storage::makeDirectory('categories');
          
         User::create([
-            'full_name' => 'Gian Garcia',
-            'email' => 'giangarcia@correo.com',
+            'full_name' => 'Admin',
+            'email' => 'admin@correo.com',
             'password' => Hash::make('12345678'),
         ]);
 
         User::create([
-            'full_name' => 'Rodrigo Cifuentes',
-            'email' => 'cifuentes@correo.com',
-            'password' => Hash::make('12asd5678'),
+            'full_name' => 'Test',
+            'email' => 'test@correo.com',
+            'password' => Hash::make('12345678'),
         ]);
 
         User::factory(10)->create();

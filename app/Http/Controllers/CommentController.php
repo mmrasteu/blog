@@ -19,7 +19,7 @@ class CommentController extends Controller
         $comments = DB::table('comments') //FROM comments
                 ->join('articles','comments.article_id','=','articles.id') //JOIN articles a ON c.article_id=a.id
                 ->join('users','comments.user_id','=','users.id') //JOIN users u ON c.users_id=u.id
-                ->select('comments.value', 'comments.description', 'articles.title', 'users.full_name') //SELECT ... 
+                ->select('comments.id', 'comments.value', 'comments.description', 'articles.title', 'users.full_name') //SELECT ... 
                 ->where('articles.user_id', '=', Auth::user()->id) // WHERE ...
                 ->orderBy('articles.id', 'desc') //ORDER BY ...
                 ->get();
@@ -45,7 +45,7 @@ class CommentController extends Controller
                             ->where('article_id', $request->article_id)->exists();
         
         // Consulta para obtener el slug y el estado del articulo comentado
-        $article = Article::select('stat', 'slug')->find($request->article_id);
+        $article = Article::select('status', 'slug')->find($request->article_id);
 
         // Si no existe y si el estado del articulo es publico, comentar.
         if (!$result and $article->status == 1) {
@@ -96,6 +96,6 @@ class CommentController extends Controller
         $comment->delete();
 
         return redirect()->action([CommentController::class, 'index'], compact('comment'))
-                            ->width('success-delete', 'Comentario eliminado con exito');
+                            ->with('success-delete', 'Comentario eliminado con exito');
     }
 }
