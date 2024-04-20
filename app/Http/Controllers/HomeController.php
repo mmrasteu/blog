@@ -45,7 +45,7 @@ class HomeController extends Controller
     }
 
     public function all(){
-        $category = Category::where('status', 1)
+        $categories = Category::where('status', 1)
                     ->simplePaginate(20);
 
         $navbar = Category::where([
@@ -53,6 +53,6 @@ class HomeController extends Controller
             ['is_featured', '1']
         ])->paginate(3);
 
-        return view('home.all-categories', compact('category', 'navbar'));
+        return view('home.all-categories', compact('categories', 'navbar'));
     }
 }

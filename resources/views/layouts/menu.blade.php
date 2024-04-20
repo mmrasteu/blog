@@ -3,7 +3,7 @@
 
         <div class="logo">
             <!--Logo-->
-            <a href="#"><img src="{{ asset('img/logo.png') }}" alt="Logo"></a>
+            <a href="{{ route('home.index') }}"><img src="{{ asset('img/logo.png') }}" alt="Logo"></a>
         </div>
         <!-- Estoy significa: Si el usuario NO esta autenticado -->
         @guest 
@@ -27,9 +27,16 @@
 
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li><a class="dropdown-item"
-                        href="#">Perfil</a></li>
+                    href="{{ route('profiles.show', ['profile' => Auth::user()->id]) }}">
+                    Perfil
+                </a></li>
+
+                <li><a class="dropdown-item"
+                        href="{{ route('profiles.edit', ['profile' => Auth::user()->id]) }}">
+                        Editar Perfil
+                    </a></li>
                 
-                <li><a class="dropdown-item" href="#">Ir al admin</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.index') }}">Ir al admin</a></li>
                 
                 <li>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
