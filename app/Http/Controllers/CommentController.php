@@ -11,6 +11,15 @@ use App\Http\Requests\CommentRequest;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:comments.index')->only('index');
+        $this->middleware('can:comments.create')->only('create', 'store');
+        $this->middleware('can:comments.edit')->only('edit', 'update');
+        $this->middleware('can:comments.destroy')->only('destroy');
+
+    }
+    
     /**
      * Display a listing of the resource.
      */

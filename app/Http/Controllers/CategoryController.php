@@ -11,6 +11,12 @@ use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:categories.index')->only('index');
+        $this->middleware('can:categories.destroy')->only('destroy');
+
+    }
     /**
      * Display a listing of the resource.
      */

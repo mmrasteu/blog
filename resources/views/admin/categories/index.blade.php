@@ -23,10 +23,11 @@
 @endif
 
 <div class="card">
-    
+    @can('categories.create')
     <div class="card-header">
         <a class="btn btn-primary" href="{{ route('categories.create') }}">Crear categoría</a>
     </div>
+    @endcan
     
     <div class="card-body">
         <table class="table table-striped">
@@ -56,10 +57,11 @@
                         disabled>
                     </td>
 
-
+                    @can('categories.edit')
                     <td width="10px"><a href="{{ route('categories.edit', $category->slug) }}"
                             class="btn btn-primary btn-sm mb-2">Editar</a></td>
-                   
+                    @endcan
+                    @can('categories.destroy')
                     <td width="10px">
                         <form action="{{ route('categories.destroy', $category->slug) }}" method="POST">
                             @csrf
@@ -67,6 +69,7 @@
                             <input type="submit" value="Eliminar" class="btn btn-danger btn-sm">
                         </form>
                     </td>
+                    @endcan
 
                 </tr>
                 @endforeach

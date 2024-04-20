@@ -7,14 +7,21 @@
 @endsection
 
 @section('content')
+
+@if (session('success-update'))
+<div class="alert alert-success" role="alert">
+    {{ session('success-update') }}
+</div>
+@endif
 <div class="card">
     <div class="card-body">
-        <form method="POST" action="#">
-            
+        <form method="POST" action="{{ route('roles.update', $role->id) }}">
+            @csrf
+            @method('PUT')
             <div class="form-group">
                 <label>Nombre</label>
                 <input type="text" class="form-control" id="name" name='name'
-                        placeholder="Nombre del rol" value="">
+                        placeholder="Nombre del rol" value="{{ $role->name }}">
 
                 @error('name')
                 <span class="alert-red">
@@ -24,14 +31,17 @@
 
             </div>
             <h3>Lista de permisos</h3>
-
+            @foreach ($permissions as $permission)
             <div>
                 <label>
-                    <input type="checkbox" name="permissions[]" id="" value="" 
+                    <input type="checkbox" name="permissions[]" id="" value="{{ $permission->id }}" 
+                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : ''}}
                     class="mr-1">
-                   
+                    {{ $permission->description }}
+                    
                 </label>
             </div>
+            @endforeach
 
             <input type="submit" value="Modificar rol" class="btn btn-primary">
         </form>

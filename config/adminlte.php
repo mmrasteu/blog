@@ -319,6 +319,7 @@ return [
             'text' => 'Dashboard',
             'route' => 'admin.index',
             'icon' => 'fas fa-pager',
+            'can'  => 'admin.index'
         ],
         ['header' => 'PANEL'],
         [
@@ -331,18 +332,35 @@ return [
             'route' => 'articles.index',
             'icon' => 'fas fa-poll',
             'active' => ['admin/articles*'],
+            'can'   => 'articles.index'
         ],
         [
             'text' => 'Categorias',
             'route' => 'categories.index',
             'icon' => 'fas fa-poll',
             'active' => ['admin/categories*'],
+            'can'   => 'categories.index'
         ],
         [
-            'text' => 'Comments',
+            'text' => 'Comentarios',
             'route' => 'comments.index',
             'icon' => 'fas fa-poll',
             'active' => ['admin/comments*'],
+            'can'   => 'comments.index'
+        ],
+        [
+            'text' => 'Usuarios',
+            'route' => 'users.index',
+            'icon' => 'fas fa-users',
+            'active' => ['admin/users*'],
+            'can'   => 'users.index'
+        ],
+        [
+            'text' => 'Roles',
+            'route' => 'roles.index',
+            'icon' => 'fas fa-lock',
+            'active' => ['admin/roles*'],
+            'can'   => 'roles.index'
         ],
     ],
 

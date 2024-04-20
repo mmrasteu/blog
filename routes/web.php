@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
@@ -14,7 +15,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/all', [HomeController::class, 'all'])->name('home.all');
 
 //Administrador
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+Route::get('/admin', [AdminController::class, 'index'])
+                    ->middleware('can:admin.index') // Forma de proteger con roles
+                    ->name('admin.index');
 
 //Rutas del admin
 Route::namespace('App\Http\Controllers')->prefix('admin')->group(function () {
@@ -30,6 +33,14 @@ Route::namespace('App\Http\Controllers')->prefix('admin')->group(function () {
     Route::resource('comments', 'CommentController')
                 ->only('index', 'destroy')
                 ->names('comments');
+    //Categorias
+    Route::resource('users', 'UserController')
+                ->except('create', 'store', 'show')
+                ->names('users');
+    //Roles
+    Route::resource('roles', 'RoleController')
+                ->except('show')
+                ->names('roles');
 });
 
 // Articulos

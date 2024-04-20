@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Database\Seeders\RoleSeeder;
 use Database\Seeders\UserSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);*/
         // Llamar al seeder
+        $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
 
         // Factories
